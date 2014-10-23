@@ -8,6 +8,8 @@ App::uses( 'HttpSocket', 'Network/Http');
  */
 class UsersController extends AppController {
 
+	public $components = array('RequestHandler');
+
 /**
  * Scaffold
  *
@@ -23,9 +25,12 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 	    parent::beforeFilter();
 	    // ユーザー自身による登録とログアウトを許可する
-	    $this->Auth->allow('add', 'logout');
+	    $this->Auth->allow('logout', 'auth_callback', 'auth_callback2', 'add');
 
-		$this->OAuth->allow(array('login', 'logout', 'index', 'auth_callback'));
+		$this->OAuth->allow(array('login', 'logout', 'auth_callback', 'auth_callback2'));
+
+//		if (!$this->request->is('ajax')) throw new BadRequestException('Ajax以外でのアクセスは許可されていません。');
+        $this->response->header('X-Content-Type-Options', 'nosniff');
 
 //	    if($this->params['action'] == 'opauthComplete') {
 //	        $this->Security->csrfCheck = false;
@@ -46,7 +51,11 @@ class UsersController extends AppController {
 			debug($client);
 			$this->Cookie->write('client_id', $client['Client']['client_id']);
 			$this->Cookie->write('client_secret', $client['Client']['client_secret']);
-			$this->redirect(array('controller' => 'oauth', 'action' => 'authorize', '?' => array('response_type' => 'code', 'client_id' => $client['Client']['client_id'], 'redirect_url' => 'http://localhost/users/auth_callback')));
+			$this->redirect(array('controller' => 'oauth', 'action' => 'authorize', 
+							'?' => array('response_type' => 'code', 
+										'client_id' => $client['Client']['client_id'], 
+										'redirect_url' => 'http://localhost/users/auth_callback')));
+
 //	        if ($this->Auth->login()) {
 //	            $this->redirect($this->Auth->redirect());
 //	        } else {
@@ -78,27 +87,35 @@ class UsersController extends AppController {
 	}
 
     public function index() {
-        $this->User->recursive = 0;
-        $this->set('users', $this->paginate());
+        $users = $this->User->find('all');
+        $this->set(array(
+            'users' => $users,
+        ));
     }
 
     public function view($id = null) {
-        $this->User->id = $id;
-        if (!$this->User->exists()) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-        $this->set('user', $this->User->read(null, $id));
+        $user = $this->User->findById($id);
+        $this->set(array(
+            'user' => $user,
+            '_serialize' => array('user')
+        ));
     }
 
     public function add() {
         if ($this->request->is('post')) {
-            $this->User->create();
-            if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
-                $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
-            }
+
+	        $this->User->create();
+	        if ($this->User->save($this->request->data)) {
+	            $message = 'Saved';
+	        } else {
+	            $message = 'Error';
+	            $message .= ':' . $this->User->validationErrors;
+	        }
+
+	        $this->set(array(
+	            'message'    => $message,
+	            '_serialize' => array('message')
+	        ));
         }
     }
 
@@ -107,13 +124,20 @@ class UsersController extends AppController {
         if (!$this->User->exists()) {
             throw new NotFoundException(__('Invalid user'));
         }
+
         if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
-                $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
-            }
+
+	        $this->User->id = $id;
+	        if ($this->User->save($this->request->data)) {
+	            $message = 'Saved';
+	        } else {
+	            $message = 'Error';
+	        }
+
+	        $this->set(array(
+	            'message' => $message,
+	            '_serialize' => array('message')
+	        ));
         } else {
             $this->request->data = $this->User->read(null, $id);
             unset($this->request->data['User']['password']);
@@ -121,17 +145,22 @@ class UsersController extends AppController {
     }
 
     public function delete($id = null) {
-        $this->request->onlyAllow('post');
+
+        $this->request->onlyAllow('delete');
 
         $this->User->id = $id;
         if (!$this->User->exists()) {
             throw new NotFoundException(__('Invalid user'));
         }
-        if ($this->User->delete()) {
-            $this->Session->setFlash(__('User deleted'));
-            $this->redirect(array('action' => 'index'));
+
+        if ($this->User->delete($id)) {
+            $message = 'Deleted';
+        } else {
+            $message = 'Error';
         }
-        $this->Session->setFlash(__('User was not deleted'));
-        $this->redirect(array('action' => 'index'));
+        $this->set(array(
+            'message' => $message,
+            '_serialize' => array('message')
+        ));
     }
 }
