@@ -52,10 +52,5 @@ class AppController extends Controller {
 		        'username' => 'username'
 		    )
 		);
-//		$client = $this->OAuth->Client->add(array("Client" => array(
-//    "client_id" => "NGYcZDRjODcxYzFkY2Rk",
-//    "client_secret" => "8e7ff3208eed06d101bf3da2473fc92ac1c6d2e7",
-//    "redirect_uri" => "http://localhost")));
-//    debug($client);
     }
 }

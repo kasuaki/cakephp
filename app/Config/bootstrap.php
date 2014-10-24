@@ -94,14 +94,6 @@ CakePlugin::loadAll(array(
     'OAuth' => array('routes' => true)
 ));
 
-CakePlugin::load('Opauth', array('routes' => true, 'bootstrap' => true));
-//Configure::write('Opauth.path', '/auth');
-
-Configure::write('Opauth.Strategy.Twitter', array(
-	'key'    => 'c977MImaiNsUZcjgaGVrjjhxq',
-	'secret' => 'G2dWS84KYzKLCMstGA3im74S3ttTGauwX0A4v4HiYjTBr8EpGI'
-));
-
 
 Configure::write('Dispatcher.filters', array(
 	'AssetDispatcher',
