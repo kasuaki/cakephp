@@ -37,15 +37,22 @@ class AppController extends Controller {
 		'Session',
 		'Cookie',
         'Auth' => array(
-            'loginRedirect' => array('controller' => 'posts', 'action' => 'index'),
-            'logoutRedirect' => array('controller' => 'pages', 'action' => 'display', 'home')
+        	'authenticate' => array(
+        		'all' => array('userModel' => 'User'),
+        		'Form',
+        	),
+            'loginRedirect' => array('controller' => 'main', 'action' => 'index'),
+            'logoutRedirect' => array('controller' => 'main', 'action' => 'logout'),
+			'loginAction' => array('controller' => 'logins', 'action' => 'login'),
+			//未ログイン時のメッセージ
+			'authError' => 'あなたのお名前とパスワードを入力して下さい。',
         ),
 	);
 
 
     public function beforeFilter() {
-        $this->Auth->allow('index', 'view');
 
+		$this->OAuth->allow(array('all'));
 		$this->OAuth->authenticate = array(
 		    'userModel' => 'User',
 		    'fields' => array(

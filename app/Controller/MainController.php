@@ -35,12 +35,17 @@ class MainController extends AppController {
 	public function beforeFilter() {
 	    parent::beforeFilter();
 
-	    $this->Auth->allow('index');
+	    $this->Auth->allow('logout');
 
-		$this->OAuth->allow(array('index'));
+		$this->OAuth->allow(array('index', 'logout'));
 	}
 
     public function index() {
+	    $this->layout = false;
+    }
+
+    public function logout() {
+    	echo "logout";
 	    $this->layout = false;
     }
 }
