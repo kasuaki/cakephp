@@ -42,6 +42,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->script( 'backbone.babysitter.js');
 		echo $this->Html->script( 'backbone.marionette.js');
 		echo $this->Html->script( 'main.js');
+		$script = "$(function(){ window.name = '" . $accessToken . "'});";
+		echo $this->Html->scriptBlock($script, array('inline' => false));
+
 		echo $this->fetch('script');
 ?>
 </head>
@@ -115,6 +118,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		<td id="created"><%- created %></td>
 		<td id="modified"><%- modified %></td>
 	</script>
+	<?php echo $this->element('sql_dump'); ?>
 
 </body>
 </html>

@@ -11,11 +11,15 @@ class UsersController extends AppController {
 
 	public function beforeFilter() {
 	    parent::beforeFilter();
-	    // ƒ†[ƒU[Ž©g‚É‚æ‚é“o˜^‚ÆƒƒOƒAƒEƒg‚ð‹–‰Â‚·‚é
-	    $this->Auth->allow('add', 'delete', 'edit');
 
-		if (!$this->request->is('ajax')) throw new BadRequestException('AjaxˆÈŠO‚Å‚ÌƒAƒNƒZƒX‚Í‹–‰Â‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB');
+		if (!$this->request->is('ajax')) throw new BadRequestException('Ajaxä»¥å¤–ã§ã®ã‚¢ã‚¯ã‚»ã‚¹ã¯è¨±å¯ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚');
         $this->response->header('X-Content-Type-Options', 'nosniff');
+
+
+	    $this->Auth->allow('index', 'view');
+
+		$this->OAuth->allow(array('index', 'view'));
+
 	}
 
     public function index() {

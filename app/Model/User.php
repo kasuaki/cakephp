@@ -1,11 +1,59 @@
 <?php
 App::uses('AppModel', 'Model');
-App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
 /**
  * User Model
  *
+ * @property Client $Client
  */
 class User extends AppModel {
+
+
+	//The Associations below have been created with all possible keys, those that are not needed can be removed
+	public $virtualFields = array(
+			'client_id' => '"Client".client_id',
+			'client_secret' => '"Client".client_secret',
+			'redirect_uri' => '"Client".redirect_uri',
+			'user_id' => '"Client".user_id',
+			'oauth_token' => '"AccessToken".oauth_token',
+			'code' => '"AuthCode".code',
+			'refresh_token' => '"RefreshToken".refresh_token',
+	);
+
+/**
+ * hasOne associations
+ *
+ * @var array
+ */
+	public $hasOne = array(
+		'Client' => array(
+			'className' => 'Client',
+			'foreignKey' => 'user_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'AccessToken' => array(
+			'className' => 'AccessToken',
+			'foreignKey' => false,
+			'conditions' => array('"Client".client_id' => '"AccessToken".client_id'),
+			'fields' => array('oauth_token'),
+			'order' => ''
+		),
+		'AuthCode' => array(
+			'className' => 'AuthCode',
+			'foreignKey' => false,
+			'conditions' => array('"Client".client_id' => '"AuthCode".client_id'),
+			'fields' => array('code'),
+			'order' => ''
+		),
+		'RefreshToken' => array(
+			'className' => 'RefreshToken',
+			'foreignKey' => false,
+			'conditions' => array('"Client".client_id' => '"RefreshToken".client_id'),
+			'fields' => array('refresh_token'),
+			'order' => ''
+		)
+	);
 
     public $validate = array(
         'username' => array(
@@ -28,6 +76,26 @@ class User extends AppModel {
             )
         )
     );
+
+/**
+ * Validate前処理.
+ *
+ * @param 
+ * @return 
+ */
+	public function beforeValidate($options = array() ) {
+	}
+
+/**
+ * エラー時の処理.
+ *
+ * @param 
+ * @return 
+ */
+	public function onError() {
+
+		echo debug($this->User->getDataSource()->getLog());
+	}
 
 	public function beforeSave($options = array()) {
 	    if (isset($this->data[$this->alias]['password'])) {

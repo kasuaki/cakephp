@@ -190,7 +190,7 @@ var SearchView  = Marionette.CompositeView.extend({
 //			mimeType: "",
 			beforeSend: function(XMLHttpRequest){
 				// アクセストークンをヘッダーにセットする必要がある.
-				XMLHttpRequest.setRequestHeader('Authorization', 'Bearer 8b6a4e822defafe0d2dea80731669c3b45302368');
+				XMLHttpRequest.setRequestHeader('Authorization', 'Bearer 3be96407d96e5f949b946294f76e04875da07242');
 			},
 		});
 	},
