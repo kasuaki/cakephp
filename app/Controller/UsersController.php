@@ -16,9 +16,9 @@ class UsersController extends AppController {
         $this->response->header('X-Content-Type-Options', 'nosniff');
 
 
-	    $this->Auth->allow('index', 'view');
+//	    $this->Auth->allow('index', 'view');
 
-		$this->OAuth->allow(array('index', 'view'));
+//		$this->OAuth->allow(array('index', 'view'));
 
 	}
 

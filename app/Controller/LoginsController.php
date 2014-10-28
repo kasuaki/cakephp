@@ -8,7 +8,7 @@ App::uses('AppController', 'Controller');
 class LoginsController extends AppController {
 
 	public $name = 'Logins';
-	public $uses = array('User', 'ExtendsClient');
+	public $uses = array('User');
 
 	public function beforeFilter() {
 	    parent::beforeFilter();
@@ -64,12 +64,21 @@ class LoginsController extends AppController {
 				$this->OAuth->OAuth2->grantAccessToken($tokenParams);
 				$tokenResult = (array)json_decode(ob_get_clean());
 
-	            $this->redirect($this->Auth->redirect());
+				// localStrageにsetItemしてからリダイレクト.
+				$url = $this->Auth->redirectUrl();
+				$this->setAction('sendAccessToken', $tokenResult["access_token"], $url);
 
 	        } else {
 	            $this->Session->setFlash(__('Invalid username or password, try again'));
 	        }
 	    }
+	}
+
+	public function sendAccessToken($accessToken = null, $url = '/') {
+
+		$this->layout = false;
+		$this->set("accessToken", $accessToken);
+		$this->set("url", $url);
 	}
 
 	public function logout() {

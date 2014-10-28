@@ -41,8 +41,15 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->script( 'backbone.wreqr.js');
 		echo $this->Html->script( 'backbone.babysitter.js');
 		echo $this->Html->script( 'backbone.marionette.js');
-		echo $this->Html->script( 'main.js');
-
+?>
+<?php $this->Html->scriptStart(array('inline' => false)); ?>
+$(function() {
+	$('#mainButton').on('click', function() {
+		location.href = "/main/index";
+	});
+});
+<?php $this->Html->scriptEnd(); ?>
+<?php 
 		echo $this->fetch('script');
 ?>
 </head>
@@ -55,7 +62,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 			<?php echo $this->Session->flash(); ?>
 
-			<div id="filter"></div>
+			<div id="filter"><input type="button" id="mainButton" value="mainButton" /></div>
 			<div id="result"></div>
 
 		</div>
@@ -71,53 +78,5 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			</p>
 		</div>
 	</div>
-/*	<?php echo $this->element('sql_dump'); ?> */
-
-
-	<script id="SearchViewTemplate" type="text/html">
-		<input type="button" id="sub" value="sub" />
-		<table>
-		<tbody>
-		<tr>
-		<td><input type="button" id="add" value="add" /></td>
-		<td><input type="button" id="addAjax" value="addAjax" /></td>
-		</tr>
-		<tr>
-		<td><input type="button" id="edit" value="edit" /></td>
-		<td><input type="button" id="editAjax" value="editAjax" /></td>
-		</tr>
-		<tr>
-		<td><input type="button" id="delete" value="delete" /></td>
-		<td><input type="button" id="deleteAjax" value="deleteAjax" /></td>
-		</tr>
-		<tr>
-		<td><input type="button" id="view" value="view" />
-		<td><input type="button" id="viewAjax" value="viewAjax" />
-		</tr>
-		<tr>
-		<td><input type="button" id="index" value="index" />
-		<td><input type="button" id="indexAjax" value="indexAjax" />
-		</tr>
-		</tbody>
-		</table>
-		<div id="eventName"></div>
-		<table>
-		<thead>
-		</thead>
-		<tbody id="body">
-		</tbody>
-		</table>
-	</script>
-
-	<script id="ItemViewTemplate" type="text/html">
-		<td id="id"><%- id %></td>
-		<td id="username"><%- username %></td>
-		<td id="password"><%- password %></td>
-		<td id="role"><%- role %></td>
-		<td id="created"><%- created %></td>
-		<td id="modified"><%- modified %></td>
-	</script>
-	<?php echo $this->element('sql_dump'); ?>
-
 </body>
 </html>

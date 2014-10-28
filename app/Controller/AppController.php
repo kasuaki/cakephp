@@ -31,6 +31,9 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+
+	public $uses = array('User');
+
 	public $components = array(
 		'DebugKit.Toolbar',
 		'OAuth.OAuth', 
@@ -61,22 +64,5 @@ class AppController extends Controller {
 		        'username' => 'username'
 		    )
 		);
-
-		// ログイン済みだったらアクセストークンを設定.
-		if ($this->Auth->loggedIn()) {
-
-			$client_id = $this->Auth->user('client_id');
-
-			$access_tokens = $this->Auth->user('Client.AccessToken');
-			if (empty($access_tokens)) {
-				$access_tokens = array();
-			}
-
-			$result = Hash::extract($access_tokens, '{n}[client_id=' . $client_id . ']');
-
-			$accessToken = (!empty($result)) ? $result[0]['oauth_token'] : '';
-
-			$this->set("accessToken", $accessToken);
-		}
     }
 }

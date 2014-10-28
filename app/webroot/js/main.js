@@ -141,11 +141,10 @@ var SearchView  = Marionette.CompositeView.extend({
 		viewAjaxButton: "#viewAjax",
 		indexButton: "#index",
 		indexAjaxButton: "#indexAjax",
-		eventName: "#eventName"
+		subButton: "#sub",
+		eventName: "#eventName",
 	},
 	events: {
-		"click @ui.allSelectButton" : "onClickAllSelectButton",
-		"click @ui.importButton" : "onClickImportButton",
 		"click @ui.addButton": "onClickAddButton",
 		"click @ui.addAjaxButton": "onClickAddAjaxButton",
 		"click @ui.editButton": "onClickEditButton",
@@ -156,6 +155,7 @@ var SearchView  = Marionette.CompositeView.extend({
 		"click @ui.viewAjaxButton": "onClickViewAjaxButton",
 		"click @ui.indexButton": "onClickIndexButton",
 		"click @ui.indexAjaxButton": "onClickIndexAjaxButton",
+		"click @ui.subButton": "onClickSubButton",
 	},
 
 	initialize: function(options) {
@@ -190,9 +190,15 @@ var SearchView  = Marionette.CompositeView.extend({
 //			mimeType: "",
 			beforeSend: function(XMLHttpRequest){
 				// アクセストークンをヘッダーにセットする必要がある.
-				XMLHttpRequest.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem("accessToken"));
+				var header = 'Bearer ' + localStorage.getItem("accessToken");
+				XMLHttpRequest.setRequestHeader('Authorization', header);
 			},
 		});
+	},
+
+	onClickSubButton: function() {
+
+		location.href = "/main/sub";
 	},
 
 	onClickAddButton: function() {
@@ -279,8 +285,7 @@ var SearchView  = Marionette.CompositeView.extend({
 			role: "author"
 		};
 
-		model.set(data);
-		model.save();
+		model.save(data);
 	},
 
 	onClickDeleteButton: function() {
@@ -378,6 +383,8 @@ var SearchView  = Marionette.CompositeView.extend({
 		this.setElement(this.$el);
 
 		this.collection.fetch();
+		
+		$('#sub').on('click', this.onClickSubButton);
 	},
 });
 
