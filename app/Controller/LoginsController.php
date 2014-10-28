@@ -31,14 +31,13 @@ class LoginsController extends AppController {
 
 				$this->OAuth->Client->deleteAll(array('user_id' => $this->Auth->user('id')), true/* cascade */);
 
+				// clientに新規ユーザー追加.
 			    $client = $this->OAuth->Client->add(array("Client" => array(
 			    	"redirect_uri" => "http://localhost/dummy",
 			    	"user_id" => $this->Auth->user('id'),
 			    )));
 
-//				var_dump($this->OAuth->getClientDetails($client['Client']['client_id']));
-//				var_dump($this->OAuth->checkClientCredentials($client['Client']['client_id']));
-
+				// authcode発行.
 				 $authCodeParams = array("response_type" => "code",
 										 "client_id" => $client['Client']['client_id'],
 										 "redirect_uri" => "http://localhost/dummy");
@@ -47,6 +46,7 @@ class LoginsController extends AppController {
 
 				$authCode = Hash::get($result, 'query.code');
 
+				// accessToken発行.
 				$tokenParams = array(
 					"grant_type" => "authorization_code",
 					"scope" => "",
@@ -64,8 +64,7 @@ class LoginsController extends AppController {
 				$this->OAuth->OAuth2->grantAccessToken($tokenParams);
 				$tokenResult = (array)json_decode(ob_get_clean());
 
-				$url = $this->Auth->redirect();
-	            $this->redirect($url . "/" . $tokenResult['access_token']);
+	            $this->redirect($this->Auth->redirect());
 
 	        } else {
 	            $this->Session->setFlash(__('Invalid username or password, try again'));

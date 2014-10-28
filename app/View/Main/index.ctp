@@ -42,7 +42,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->script( 'backbone.babysitter.js');
 		echo $this->Html->script( 'backbone.marionette.js');
 		echo $this->Html->script( 'main.js');
-		$script = "$(function(){ window.name = '" . $accessToken . "'});";
+		$script = "$(function(){ localStorage.setItem('accessToken','" . $accessToken . "');});";
 		echo $this->Html->scriptBlock($script, array('inline' => false));
 
 		echo $this->fetch('script');

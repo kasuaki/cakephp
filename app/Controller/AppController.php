@@ -38,7 +38,9 @@ class AppController extends Controller {
 		'Cookie',
         'Auth' => array(
         	'authenticate' => array(
-        		'all' => array('userModel' => 'User'),
+        		'all' => array('userModel' => 'User', 
+        					   'recursive' => 2, 
+        					   'fields' => array('username' => 'username', 'password' => 'password')),
         		'Form',
         	),
             'loginRedirect' => array('controller' => 'main', 'action' => 'index'),
@@ -59,5 +61,22 @@ class AppController extends Controller {
 		        'username' => 'username'
 		    )
 		);
+
+		// ログイン済みだったらアクセストークンを設定.
+		if ($this->Auth->loggedIn()) {
+
+			$client_id = $this->Auth->user('client_id');
+
+			$access_tokens = $this->Auth->user('Client.AccessToken');
+			if (empty($access_tokens)) {
+				$access_tokens = array();
+			}
+
+			$result = Hash::extract($access_tokens, '{n}[client_id=' . $client_id . ']');
+
+			$accessToken = (!empty($result)) ? $result[0]['oauth_token'] : '';
+
+			$this->set("accessToken", $accessToken);
+		}
     }
 }

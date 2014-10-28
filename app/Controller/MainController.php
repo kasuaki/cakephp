@@ -40,8 +40,7 @@ class MainController extends AppController {
 		$this->OAuth->allow(array('index'));
 	}
 
-    public function index($accessToken = null) {
+    public function index() {
 	    $this->layout = false;
-	    $this->set("accessToken", $accessToken);
     }
 }

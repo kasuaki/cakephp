@@ -14,11 +14,9 @@ class User extends AppModel {
 			'client_secret' => '"Client".client_secret',
 			'redirect_uri' => '"Client".redirect_uri',
 			'user_id' => '"Client".user_id',
-			'oauth_token' => '"AccessToken".oauth_token',
-			'code' => '"AuthCode".code',
-			'refresh_token' => '"RefreshToken".refresh_token',
 	);
 
+	public $recursive = 2;
 /**
  * hasOne associations
  *
@@ -32,28 +30,12 @@ class User extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'AccessToken' => array(
-			'className' => 'AccessToken',
-			'foreignKey' => false,
-			'conditions' => array('"Client".client_id' => '"AccessToken".client_id'),
-			'fields' => array('oauth_token'),
-			'order' => ''
-		),
-		'AuthCode' => array(
-			'className' => 'AuthCode',
-			'foreignKey' => false,
-			'conditions' => array('"Client".client_id' => '"AuthCode".client_id'),
-			'fields' => array('code'),
-			'order' => ''
-		),
-		'RefreshToken' => array(
-			'className' => 'RefreshToken',
-			'foreignKey' => false,
-			'conditions' => array('"Client".client_id' => '"RefreshToken".client_id'),
-			'fields' => array('refresh_token'),
-			'order' => ''
-		)
 	);
+
+	public function afterFind($results, $primary = false) {
+
+		return $results;
+	}
 
     public $validate = array(
         'username' => array(
