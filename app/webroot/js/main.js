@@ -172,7 +172,23 @@ var SearchView  = Marionette.CompositeView.extend({
 					var xhr = b;
 					var options = c;
 
-					obj_dump(xhr);
+					alert(xhr.status);
+
+					switch (xhr.status) {
+						case 401:		// Unauthorized OAuth による認可が失敗しています
+							location.href = "/logins/login";
+							break;
+						case 500:		// Internal Server Error API 側の問題による失敗です
+						case 405:		// Method Not Allowed メソッドが許可されていません
+						case 202:		// Accepted リクエストが正常に受け付けられました
+						case 400:		// Bad Request リクエストデータに不正値があります
+						case 404:		// Not Found リソースが存在しません
+						case 503:		// Service Unavailable 一時的に API アクセスが出来ません
+						case 200:		// OK 成功
+						case 201:		// Created 新しいリソースの生成が成功しました
+						default:
+							break;
+					}
 					break;
 			}
 		}, this));

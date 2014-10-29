@@ -33,14 +33,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 
-		echo $this->Html->script( 'json2.js');
-		echo $this->Html->script( 'jquery-2.1.1.js');
-		echo $this->Html->script( 'underscore.js');
-		echo $this->Html->script( 'backbone.js');
-		echo $this->Html->script( 'backbone.stickit.js');
-		echo $this->Html->script( 'backbone.wreqr.js');
-		echo $this->Html->script( 'backbone.babysitter.js');
-		echo $this->Html->script( 'backbone.marionette.js');
+		echo $this->Html->script( 'vendor.js');
+		echo $this->Html->script( 'vendor/modernizr.js');
+		echo $this->Html->script( 'plugins.js');
 		echo $this->Html->script( 'main.js');
 
 		echo $this->fetch('script');
