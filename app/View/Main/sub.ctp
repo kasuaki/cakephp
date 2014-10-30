@@ -33,19 +33,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 
-		echo $this->Html->script( 'vendor.js');
-		echo $this->Html->script( 'vendor/modernizr.js');
-		echo $this->Html->script( 'plugins.js');
-?>
-<?php $this->Html->scriptStart(array('inline' => false)); ?>
-$(function() {
-	$('#mainButton').on('click', function() {
-		location.href = "/main/index";
-	});
-});
-<?php $this->Html->scriptEnd(); ?>
-<?php 
-		echo $this->fetch('script');
+		echo $this->Html->script( 'sub.js');
 ?>
 </head>
 <body>
@@ -73,5 +61,7 @@ $(function() {
 			</p>
 		</div>
 	</div>
+
+	<?php echo $this->fetch('script'); ?>
 </body>
 </html>

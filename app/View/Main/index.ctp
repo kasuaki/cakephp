@@ -33,12 +33,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 
-		echo $this->Html->script( 'vendor.js');
-		echo $this->Html->script( 'vendor/modernizr.js');
-		echo $this->Html->script( 'plugins.js');
 		echo $this->Html->script( 'main.js');
-
-		echo $this->fetch('script');
 ?>
 </head>
 <body>
@@ -68,51 +63,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	</div>
 /*	<?php echo $this->element('sql_dump'); ?> */
 
-
-	<script id="SearchViewTemplate" type="text/html">
-		<input type="button" id="sub" value="sub" />
-		<table>
-		<tbody>
-		<tr>
-		<td><input type="button" id="add" value="add" /></td>
-		<td><input type="button" id="addAjax" value="addAjax" /></td>
-		</tr>
-		<tr>
-		<td><input type="button" id="edit" value="edit" /></td>
-		<td><input type="button" id="editAjax" value="editAjax" /></td>
-		</tr>
-		<tr>
-		<td><input type="button" id="delete" value="delete" /></td>
-		<td><input type="button" id="deleteAjax" value="deleteAjax" /></td>
-		</tr>
-		<tr>
-		<td><input type="button" id="view" value="view" />
-		<td><input type="button" id="viewAjax" value="viewAjax" />
-		</tr>
-		<tr>
-		<td><input type="button" id="index" value="index" />
-		<td><input type="button" id="indexAjax" value="indexAjax" />
-		</tr>
-		</tbody>
-		</table>
-		<div id="eventName"></div>
-		<table>
-		<thead>
-		</thead>
-		<tbody id="body">
-		</tbody>
-		</table>
-	</script>
-
-	<script id="ItemViewTemplate" type="text/html">
-		<td id="id"><%- id %></td>
-		<td id="username"><%- username %></td>
-		<td id="password"><%- password %></td>
-		<td id="role"><%- role %></td>
-		<td id="created"><%- created %></td>
-		<td id="modified"><%- modified %></td>
-	</script>
-	<?php echo $this->element('sql_dump'); ?>
-
+	<?php echo $this->fetch('script'); ?>
 </body>
 </html>
