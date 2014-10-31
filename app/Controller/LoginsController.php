@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
 
 /**
  * Logins Controller
@@ -24,49 +25,31 @@ class LoginsController extends AppController {
 
 	        if ($this->Auth->login()) {
 
-				// user_idに連動してレコードを一緒に削除.
-				$this->OAuth->Client->hasMany['AccessToken']['dependent'] = true;
-				$this->OAuth->Client->hasMany['AuthCode']['dependent'] = true;
-				$this->OAuth->Client->hasMany['RefreshToken']['dependent'] = true;
+				$passwordHasher = new SimplePasswordHasher();
+				$pass = $passwordHasher->hash($this->request->data('User.password'));
 
-				$this->OAuth->Client->deleteAll(array('user_id' => $this->Auth->user('id')), true/* cascade */);
-
-				// clientに新規ユーザー追加.
-			    $client = $this->OAuth->Client->add(array("Client" => array(
-			    	"redirect_uri" => "http://localhost/dummy",
-			    	"user_id" => $this->Auth->user('id'),
-			    )));
-
-				// authcode発行.
-				 $authCodeParams = array("response_type" => "code",
-										 "client_id" => $client['Client']['client_id'],
-										 "redirect_uri" => "http://localhost/dummy");
-
-				list($redirect_uri, $result) = $this->OAuth->OAuth2->getAuthResult(true, $this->Auth->user('id'), $authCodeParams);
-
-				$authCode = Hash::get($result, 'query.code');
+				// 前回までのaccess_token及びrefresh_tokenを削除.
+				$this->OAuth->AccessToken->deleteAll(array('user_id' => $this->Auth->user('id')), false/* cascade */);
+				$this->OAuth->RefreshToken->deleteAll(array('user_id' => $this->Auth->user('id')), false/* cascade */);
 
 				// accessToken発行.
 				$tokenParams = array(
-					"grant_type" => "authorization_code",
-					"scope" => "",
-					"code" => $authCode,
-					"redirect_uri" => "http://localhost/dummy",
-					"client_id" => $client['Client']['client_id'],
-					"client_secret" => $client['Client']['client_secret'],
-					"refresh_token" => "",
+					"grant_type" => "password",
+					"username" => $this->request->data('User.username'),
+					"password" => $pass,
 				);
 
-				$authHeaders = array("PHP_AUTH_USER" => "", "PHP_AUTH_PW" => "");
+				$authHeaders = array("PHP_AUTH_USER" => $this->request->data('User.username'), 
+									 "PHP_AUTH_PW" => $pass);
 
-				// 30秒以内に実施しないとエラーになる.
 				ob_start();
-				$this->OAuth->OAuth2->grantAccessToken($tokenParams);
-				$tokenResult = (array)json_decode(ob_get_clean());
+				$this->OAuth->OAuth2->grantAccessToken($tokenParams, $authHeaders);
+//				$tokenResult = (array)json_decode(ob_get_clean());
+				$tokenResult = ob_get_clean();
 
 				// localStrageにsetItemしてからリダイレクト.
 				$url = $this->Auth->redirectUrl();
-				$this->setAction('sendAccessToken', $tokenResult["access_token"], $url);
+				$this->setAction('sendAccessToken', $tokenResult, $url);
 
 	        } else {
 	            $this->Session->setFlash(__('Invalid username or password, try again'));
@@ -74,10 +57,10 @@ class LoginsController extends AppController {
 	    }
 	}
 
-	public function sendAccessToken($accessToken = null, $url = '/') {
+	public function sendAccessToken($tokenResult = null, $url = '/') {
 
 		$this->layout = false;
-		$this->set("accessToken", $accessToken);
+		$this->set("tokenResult", $tokenResult);
 		$this->set("url", $url);
 	}
 

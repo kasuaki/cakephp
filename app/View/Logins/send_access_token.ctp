@@ -41,7 +41,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 $script =<<< EOL
 
-localStorage.setItem('accessToken',"{$accessToken}");
+localStorage.setItem('tokenResult','{$tokenResult}');
 location.href = "{$url}";
 EOL;
 echo $this->Html->scriptBlock($script, array('inline' => true));

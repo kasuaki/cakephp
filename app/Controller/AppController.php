@@ -35,8 +35,15 @@ class AppController extends Controller {
 	public $uses = array('User');
 
 	public $components = array(
+		'OAuth.OAuth' => array(
+			'className' => 'MyOAuth',
+			'authenticate' => array(
+				'userModel' => 'User',
+				'fields' => array('username' => 'username', 
+								  'password' => 'password'),
+			),
+		),
 		'DebugKit.Toolbar',
-		'OAuth.OAuth', 
 		'Session',
 		'Cookie',
         'Auth' => array(
@@ -57,12 +64,6 @@ class AppController extends Controller {
 
     public function beforeFilter() {
 
-		$this->OAuth->allow(array('all'));
-		$this->OAuth->authenticate = array(
-		    'userModel' => 'User',
-		    'fields' => array(
-		        'username' => 'username'
-		    )
-		);
+//		$this->OAuth->allow(array('all'));
     }
 }
