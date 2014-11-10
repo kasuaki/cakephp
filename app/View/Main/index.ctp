@@ -44,10 +44,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		<div id="content">
 
 			<?php echo $this->Session->flash(); ?>
-
-			<div id="filter"></div>
-			<div id="result"></div>
-
 		</div>
 		<div id="footer">
 			<?php echo $this->Html->link(
