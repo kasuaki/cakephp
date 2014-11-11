@@ -20,7 +20,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-Router::mapResources('users');
+Router::mapResources(array('users'));
 Router::parseExtensions('json');
 
 
@@ -29,7 +29,7 @@ Router::parseExtensions('json');
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
-	Router::connect('/', array('controller' => 'main', 'action' => 'index'));
+	Router::connect('/', array('controller' => 'logins', 'action' => 'index'));
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */

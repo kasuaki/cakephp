@@ -14,57 +14,54 @@ class LoginsController extends AppController {
 	public function beforeFilter() {
 	    parent::beforeFilter();
 	    // ユーザー自身による登録とログアウトを許可する
-	    $this->Auth->allow('login', 'logout');
+	    $this->Auth->allow('index', 'login');
 
-		$this->OAuth->allow(array('login'));
+		$this->OAuth->allow(array('login', 'index'));
+	}
+
+	public function index() {
 	}
 
 	public function login() {
 
-	    if ($this->request->is('post')) {
+		$this->layout = 'ajax';
+
+		if ($this->request->is('ajax')) {
 
 	        if ($this->Auth->login()) {
 
-				$passwordHasher = new SimplePasswordHasher();
-				$pass = $passwordHasher->hash($this->request->data('User.password'));
+				try {
 
-				// 前回までのaccess_token及びrefresh_tokenを削除.
-				$this->OAuth->AccessToken->deleteAll(array('user_id' => $this->Auth->user('id')), false/* cascade */);
-				$this->OAuth->RefreshToken->deleteAll(array('user_id' => $this->Auth->user('id')), false/* cascade */);
+					$passwordHasher = new SimplePasswordHasher();
+					$pass = $passwordHasher->hash($this->request->data('User.password'));
 
-				// accessToken発行.
-				$tokenParams = array(
-					"grant_type" => "password",
-					"username" => $this->request->data('User.username'),
-					"password" => $pass,
-				);
+					// 前回までのaccess_token及びrefresh_tokenを削除.
+					$this->OAuth->AccessToken->deleteAll(array('user_id' => $this->Auth->user('id')), false/* cascade */);
+					$this->OAuth->RefreshToken->deleteAll(array('user_id' => $this->Auth->user('id')), false/* cascade */);
 
-				$authHeaders = array("PHP_AUTH_USER" => $this->request->data('User.username'), 
-									 "PHP_AUTH_PW" => $pass);
+					// accessToken発行.
+					$tokenParams = array(
+						"grant_type" => "password",
+						"username" => $this->request->data('User.username'),
+						"password" => $pass,
+					);
 
-				ob_start();
-				$this->OAuth->OAuth2->grantAccessToken($tokenParams, $authHeaders);
-//				$tokenResult = (array)json_decode(ob_get_clean());
-				$tokenResult = ob_get_clean();
+					$authHeaders = array("PHP_AUTH_USER" => $this->request->data('User.username'), 
+										 "PHP_AUTH_PW" => $pass);
 
-				// localStrageにsetItemしてからリダイレクト.
-				$url = $this->Auth->redirectUrl();
-				$this->setAction('sendAccessToken', $tokenResult, $url);
+					ob_start();
+					$this->OAuth->OAuth2->grantAccessToken($tokenParams, $authHeaders);
+					$tokenResult = (array)json_decode(ob_get_clean());
+					$tokenResult["result"] = "success";
+				} catch(Exception $e) {
 
+					$tokenResult["result"] = "error";
+				}
+
+				return new CakeResponse(array('body' => json_encode($tokenResult)));
 	        } else {
-	            $this->Session->setFlash(__('Invalid username or password, try again'));
+				return new CakeResponse(array('body' => json_encode(array("result" => "error"))));
 	        }
 	    }
-	}
-
-	public function sendAccessToken($tokenResult = null, $url = '/') {
-
-		$this->layout = false;
-		$this->set("tokenResult", $tokenResult);
-		$this->set("url", $url);
-	}
-
-	public function logout() {
-	    $this->redirect($this->Auth->logout());
 	}
 }

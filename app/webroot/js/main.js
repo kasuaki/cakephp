@@ -45,12 +45,12 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {
-	var Backbone = __webpack_require__(5);
-	__webpack_require__(3);
-	__webpack_require__(4);
+	var Backbone = __webpack_require__(7);
+	__webpack_require__(5);
+	__webpack_require__(6);
 
-	var BodyLayout = __webpack_require__(1);
-	var ContentLayout = __webpack_require__(2);
+	var BodyLayout = __webpack_require__(2);
+	var ContentLayout = __webpack_require__(4);
 
 	// アプリクラス.
 	var app = new Backbone.Marionette.Application();
@@ -81,15 +81,53 @@
 		app.start();
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(_) {/*global alert */
+
+	exports.objDump = function(obj) {
+		'use strict';
+
+		var txt = '';
+		for (var one in obj){
+			txt += one + '=' + obj[one] + '\n';
+		}
+		alert(txt);
+	};
+
+	exports.locationHref = function(url) {
+		'use strict';
+
+		var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
+		var access_token = tokenResult.access_token;
+
+		if (_.isString(access_token)) {
+
+			if (url.indexOf('?') > -1) {
+				access_token = '&access_token=' + access_token;
+			} else {
+				access_token = '?access_token=' + access_token;
+			}
+
+			location.href = url + access_token;
+		} else {
+			alert('�A�N�Z�X�g�[�N���Ȃ�');
+		}
+	}
 	
-	var Backbone = __webpack_require__(5);
-	__webpack_require__(3);
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	var Backbone = __webpack_require__(7);
+	__webpack_require__(5);
 
 	// 検索View.
 	module.exports = Backbone.Marionette.Layout.extend({
@@ -121,14 +159,15 @@
 
 
 /***/ },
-/* 2 */
+/* 3 */,
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {var Backbone = __webpack_require__(5);
-	__webpack_require__(3);
+	/* WEBPACK VAR INJECTION */(function($) {var Backbone = __webpack_require__(7);
+	__webpack_require__(5);
 
-	var UserList = __webpack_require__(8);
-	var SearchView  = __webpack_require__(6);
+	var UserList = __webpack_require__(10);
+	var SearchView  = __webpack_require__(9);
 
 	// Content部.
 	module.exports = Backbone.Marionette.Layout.extend({
@@ -153,7 +192,7 @@
 			'use strict';
 
 			// templateを追加.
-			var html = __webpack_require__(12);
+			var html = __webpack_require__(14);
 			$('body').append(html);
 
 			$.ajaxSetup({
@@ -192,10 +231,10 @@
 		},
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 3 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Backbone, _) {// MarionetteJS (Backbone.Marionette)
@@ -3113,10 +3152,10 @@
 	  return Marionette;
 	})(this, Backbone, _);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(10)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(11)))
 
 /***/ },
-/* 4 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Backbone.Stickit v0.8.0, MIT Licensed
@@ -3126,7 +3165,7 @@
 
 	  // Set up Stickit appropriately for the environment. Start with AMD.
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(10), __webpack_require__(5), exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(11), __webpack_require__(7), exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  }
 
 	  // Next for Node.js or CommonJS.
@@ -3697,7 +3736,7 @@
 
 
 /***/ },
-/* 5 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Backbone.js 1.1.2
@@ -3711,7 +3750,7 @@
 
 	  // Set up Backbone appropriately for the environment. Start with AMD.
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(10), __webpack_require__(7), exports], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, $, exports) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(11), __webpack_require__(8), exports], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, $, exports) {
 	      // Export global even in AMD case in case this script is loaded with
 	      // others that may still expect a global Backbone.
 	      root.Backbone = factory(root, exports, _, $);
@@ -5311,334 +5350,7 @@
 
 
 /***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function($, _) {/*global _ */
-	/*global alert */
-
-	var Backbone = __webpack_require__(5);
-	__webpack_require__(3);
-
-	var Utility = __webpack_require__(11);
-
-	var TableItemView = __webpack_require__(9);
-
-	// 検索View.
-	module.exports = Backbone.Marionette.CompositeView.extend({
-
-		itemView: TableItemView,
-	//	itemViewOptions : function () {		'use strict';	},
-		itemViewContainer: '#body',
-
-		template: '#SearchViewTemplate',
-		templateHelpers: function() {
-			'use strict';
-			return {};
-		},
-
-		ui: {
-			addButton: '#add',
-			addAjaxButton: '#addAjax',
-			editButton: '#edit',
-			editAjaxButton: '#editAjax',
-			deleteButton: '#delete',
-			deleteAjaxButton: '#deleteAjax',
-			viewButton: '#view',
-			viewAjaxButton: '#viewAjax',
-			indexButton: '#index',
-			indexAjaxButton: '#indexAjax',
-			subButton: '#sub',
-			eventName: '#eventName',
-		},
-		events: {
-			'click @ui.addButton': 'onClickAddButton',
-			'click @ui.addAjaxButton': 'onClickAddAjaxButton',
-			'click @ui.editButton': 'onClickEditButton',
-			'click @ui.editAjaxButton': 'onClickEditAjaxButton',
-			'click @ui.deleteButton': 'onClickDeleteButton',
-			'click @ui.deleteAjaxButton': 'onClickDeleteAjaxButton',
-			'click @ui.viewButton': 'onClickViewButton',
-			'click @ui.viewAjaxButton': 'onClickViewAjaxButton',
-			'click @ui.indexButton': 'onClickIndexButton',
-			'click @ui.indexAjaxButton': 'onClickIndexAjaxButton',
-			'click @ui.subButton': 'onClickSubButton',
-		},
-
-		initialize: function(/* options */) {
-			'use strict';
-
-			// templateを追加.
-			var html = __webpack_require__(13);
-			$('body').append(html);
-
-			// イベント監視.
-			this.collection.on('all', _.bind(function(eventName, a, b/* , c */) {
-
-				var self = this;
-				var old = self.ui.eventName.text();
-				self.ui.eventName.text(old + ' ' + eventName);
-
-				switch(eventName) {
-					case 'error':
-						var xhr = b;
-	//					var model = a;
-	//					var options = c;
-
-						alert(xhr.status);
-
-						switch (xhr.status) {
-							case 401:		// Unauthorized OAuth による認可が失敗しています
-								location.href = '/logins/login';
-								break;
-							default:
-							case 500:		// Internal Server Error API 側の問題による失敗です
-							case 405:		// Method Not Allowed メソッドが許可されていません
-							case 202:		// Accepted リクエストが正常に受け付けられました
-							case 400:		// Bad Request リクエストデータに不正値があります
-							case 404:		// Not Found リソースが存在しません
-							case 503:		// Service Unavailable 一時的に API アクセスが出来ません
-							case 200:		// OK 成功
-							case 201:		// Created 新しいリソースの生成が成功しました
-								break;
-						}
-						break;
-				}
-			}, this));
-
-	//		var headers = {};
-
-			$.ajaxSetup({
-				cache: false,
-				async: true,
-				dataType:'json',
-	//			headers: headers,
-	//			contentType : '',
-	//			mimeType: '',
-				beforeSend: function(XMLHttpRequest){
-					// アクセストークンをヘッダーにセットする必要がある.
-					var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
-					var header = 'Bearer ' + tokenResult.access_token;
-					XMLHttpRequest.setRequestHeader('Authorization', header);
-				},
-			});
-		},
-
-		onClickSubButton: function() {
-			'use strict';
-
-			location.href = '/main/sub';
-		},
-
-		onClickAddButton: function() {
-			'use strict';
-
-			var self = this;
-			var data = { 
-				username: 'addTest',
-				password: 'add',
-				role: 'admin'
-			};
-
-			var model = new self.collection.model();
-
-			model.on('sync', _.bind(function(model/* , resp, options */) {
-
-				model.off('sync');
-
-				this.collection.add(model);
-			}, self));
-			model.save(data);
-		},
-
-		onClickAddAjaxButton: function() {
-			'use strict';
-
-			var data = { User: {
-				username: 'addTest',
-				password: 'add',
-				role: 'admin'
-				}
-			};
-
-			var url = '/users.json';
-
-			$.ajax({
-				data: data,
-				type:'post',
-				url: url,
-			}).done(function(json/* , textStatus, jqXHR */) {
-
-				alert(json.message);
-			}).fail(function(jqXHR, textStatus, errorThrown) {
-
-				alert(jqXHR.responseText);
-				alert(textStatus);
-				Utility.objDump(errorThrown);
-			});
-		},
-
-		onClickEditAjaxButton: function() {
-			'use strict';
-
-			var self = this;
-			var model = self.collection.last();
-
-			var data = { User: {
-				username: 'editTest',
-				password: 'edit',
-				role: 'author'
-				}
-			};
-
-			var url = '/users/' + model.get('id') + '.json';
-
-			$.ajax({
-				data: data,
-				type:'put',
-				url: url,
-			}).done(function(json/* , textStatus, jqXHR */) {
-
-
-				alert(json.message);
-			}).fail(function(jqXHR, textStatus, errorThrown) {
-
-				alert(jqXHR.responseText);
-				alert(textStatus);
-				Utility.objDump(errorThrown);
-			});
-		},
-
-		onClickEditButton: function() {
-			'use strict';
-
-			var self = this;
-			var model = self.collection.last();
-
-			var data = {
-				username: 'editTest',
-				password: 'edit',
-				role: 'author'
-			};
-
-			model.save(data);
-		},
-
-		onClickDeleteButton: function() {
-			'use strict';
-
-			var self = this;
-			var model = self.collection.last();
-
-			model.on('destroy', _.bind(function(model, collection/* , options */) {
-
-				this.off('destroy');
-
-				collection.remove(model);
-			}, self));
-
-			model.destroy();
-		},
-
-		onClickDeleteAjaxButton: function() {
-			'use strict';
-
-			var self = this;
-			var model = self.collection.last();
-
-			var url = '/users/' + model.get('id') + '.json';
-
-			$.ajax({
-				type:'delete',
-				url: url,
-			}).done(function(json/* , textStatus, jqXHR */) {
-
-				alert(json.message);
-			}).fail(function(jqXHR, textStatus, errorThrown) {
-
-				alert(jqXHR.responseText);
-				alert(textStatus);
-				Utility.objDump(errorThrown);
-			});
-		},
-
-		onClickViewButton: function() {
-			'use strict';
-			var self = this;
-			var model = self.collection.last();
-
-			model.fetch();
-		},
-
-		onClickViewAjaxButton: function() {
-			'use strict';
-
-			var url = '/users/6.json';
-
-			$.ajax({
-				type:'get',
-				url: url,
-			}).done(function(json/* , textStatus, jqXHR */) {
-
-				Utility.objDump(json);
-			}).fail(function(jqXHR, textStatus, errorThrown) {
-
-				alert(jqXHR.responseText);
-				alert(textStatus);
-				Utility.objDump(errorThrown);
-			});
-		},
-
-		onClickIndexButton: function() {
-			'use strict';
-			var self = this;
-			self.collection.fetch();
-		},
-
-		onClickIndexAjaxButton: function() {
-			'use strict';
-
-			var url = '/users.json';
-
-			$.ajax({
-				type:'get',
-				url: url,
-			}).done(function(json/* , textStatus, jqXHR */) {
-
-				_.each(json, function(value/* , key */) {
-
-					Utility.objDump(value);
-				});
-			}).fail(function(jqXHR, textStatus, errorThrown) {
-
-				alert(jqXHR.responseText);
-				alert(textStatus);
-				Utility.objDump(errorThrown);
-			});
-		},
-
-		// View がレンダリングされて画面に表示された後に呼ばれるメソッド。
-		onShow: function() {
-			'use strict';
-
-			// Get rid of that pesky wrapping-div.
-			// Assumes 1 child element present in template.
-			this.$el = this.$el.children();
-			// Unwrap the element to prevent infinitely 
-			// nesting elements during re-render.
-			this.$el.unwrap();
-			this.setElement(this.$el);
-
-			this.collection.fetch();
-			
-			$('#sub').on('click', this.onClickSubButton);
-		},
-	});
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(10)))
-
-/***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -14755,12 +14467,339 @@
 
 
 /***/ },
-/* 8 */
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function($, _) {/*global _ */
+	/*global alert */
+
+	var Backbone = __webpack_require__(7);
+	__webpack_require__(5);
+
+	var Utility = __webpack_require__(1);
+
+	var TableItemView = __webpack_require__(12);
+
+	// 検索View.
+	module.exports = Backbone.Marionette.CompositeView.extend({
+
+		itemView: TableItemView,
+	//	itemViewOptions : function () {		'use strict';	},
+		itemViewContainer: '#body',
+
+		template: '#SearchViewTemplate',
+		templateHelpers: function() {
+			'use strict';
+			return {};
+		},
+
+		ui: {
+			addButton: '#add',
+			addAjaxButton: '#addAjax',
+			editButton: '#edit',
+			editAjaxButton: '#editAjax',
+			deleteButton: '#delete',
+			deleteAjaxButton: '#deleteAjax',
+			viewButton: '#view',
+			viewAjaxButton: '#viewAjax',
+			indexButton: '#index',
+			indexAjaxButton: '#indexAjax',
+			subButton: '#sub',
+			eventName: '#eventName',
+		},
+		events: {
+			'click @ui.addButton': 'onClickAddButton',
+			'click @ui.addAjaxButton': 'onClickAddAjaxButton',
+			'click @ui.editButton': 'onClickEditButton',
+			'click @ui.editAjaxButton': 'onClickEditAjaxButton',
+			'click @ui.deleteButton': 'onClickDeleteButton',
+			'click @ui.deleteAjaxButton': 'onClickDeleteAjaxButton',
+			'click @ui.viewButton': 'onClickViewButton',
+			'click @ui.viewAjaxButton': 'onClickViewAjaxButton',
+			'click @ui.indexButton': 'onClickIndexButton',
+			'click @ui.indexAjaxButton': 'onClickIndexAjaxButton',
+			'click @ui.subButton': 'onClickSubButton',
+		},
+
+		initialize: function(/* options */) {
+			'use strict';
+
+			// templateを追加.
+			var html = __webpack_require__(15);
+			$('body').append(html);
+
+			// イベント監視.
+			this.collection.on('all', _.bind(function(eventName, a, b/* , c */) {
+
+				var self = this;
+				var old = self.ui.eventName.text();
+				self.ui.eventName.text(old + ' ' + eventName);
+
+				switch(eventName) {
+					case 'error':
+						var xhr = b;
+	//					var model = a;
+	//					var options = c;
+
+						alert(xhr.status);
+
+						switch (xhr.status) {
+							case 401:		// Unauthorized OAuth による認可が失敗しています
+								location.href = '/logins/login';
+								break;
+							default:
+							case 500:		// Internal Server Error API 側の問題による失敗です
+							case 405:		// Method Not Allowed メソッドが許可されていません
+							case 202:		// Accepted リクエストが正常に受け付けられました
+							case 400:		// Bad Request リクエストデータに不正値があります
+							case 404:		// Not Found リソースが存在しません
+							case 503:		// Service Unavailable 一時的に API アクセスが出来ません
+							case 200:		// OK 成功
+							case 201:		// Created 新しいリソースの生成が成功しました
+								break;
+						}
+						break;
+				}
+			}, this));
+
+	//		var headers = {};
+
+			$.ajaxSetup({
+				cache: false,
+				async: true,
+				dataType:'json',
+	//			headers: headers,
+	//			contentType : '',
+	//			mimeType: '',
+				beforeSend: function(XMLHttpRequest){
+					// アクセストークンをヘッダーにセットする必要がある.
+					var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
+					var header = 'Bearer ' + tokenResult.access_token;
+					XMLHttpRequest.setRequestHeader('Authorization', header);
+				},
+			});
+		},
+
+		onClickSubButton: function() {
+			'use strict';
+
+			Utility.locationHref('/main/sub');
+		},
+
+		onClickAddButton: function() {
+			'use strict';
+
+			var self = this;
+			var data = { 
+				username: 'addTest',
+				password: 'add',
+				role: 'admin'
+			};
+
+			var model = new self.collection.model();
+
+			model.on('sync', _.bind(function(model/* , resp, options */) {
+
+				model.off('sync');
+
+				this.collection.add(model);
+			}, self));
+			model.save(data);
+		},
+
+		onClickAddAjaxButton: function() {
+			'use strict';
+
+			var data = { User: {
+				username: 'addTest',
+				password: 'add',
+				role: 'admin'
+				}
+			};
+
+			var url = '/users.json';
+
+			$.ajax({
+				data: data,
+				type:'post',
+				url: url,
+			}).done(function(json/* , textStatus, jqXHR */) {
+
+				alert(json.message);
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+
+				alert(jqXHR.responseText);
+				alert(textStatus);
+				Utility.objDump(errorThrown);
+			});
+		},
+
+		onClickEditAjaxButton: function() {
+			'use strict';
+
+			var self = this;
+			var model = self.collection.last();
+
+			var data = { User: {
+				username: 'editTest',
+				password: 'edit',
+				role: 'author'
+				}
+			};
+
+			var url = '/users/' + model.get('id') + '.json';
+
+			$.ajax({
+				data: data,
+				type:'put',
+				url: url,
+			}).done(function(json/* , textStatus, jqXHR */) {
+
+
+				alert(json.message);
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+
+				alert(jqXHR.responseText);
+				alert(textStatus);
+				Utility.objDump(errorThrown);
+			});
+		},
+
+		onClickEditButton: function() {
+			'use strict';
+
+			var self = this;
+			var model = self.collection.last();
+
+			var data = {
+				username: 'editTest',
+				password: 'edit',
+				role: 'author'
+			};
+
+			model.save(data);
+		},
+
+		onClickDeleteButton: function() {
+			'use strict';
+
+			var self = this;
+			var model = self.collection.last();
+
+			model.on('destroy', _.bind(function(model, collection/* , options */) {
+
+				this.off('destroy');
+
+				collection.remove(model);
+			}, self));
+
+			model.destroy();
+		},
+
+		onClickDeleteAjaxButton: function() {
+			'use strict';
+
+			var self = this;
+			var model = self.collection.last();
+
+			var url = '/users/' + model.get('id') + '.json';
+
+			$.ajax({
+				type:'delete',
+				url: url,
+			}).done(function(json/* , textStatus, jqXHR */) {
+
+				alert(json.message);
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+
+				alert(jqXHR.responseText);
+				alert(textStatus);
+				Utility.objDump(errorThrown);
+			});
+		},
+
+		onClickViewButton: function() {
+			'use strict';
+			var self = this;
+			var model = self.collection.last();
+
+			model.fetch();
+		},
+
+		onClickViewAjaxButton: function() {
+			'use strict';
+
+			var url = '/users/6.json';
+
+			$.ajax({
+				type:'get',
+				url: url,
+			}).done(function(json/* , textStatus, jqXHR */) {
+
+				Utility.objDump(json);
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+
+				alert(jqXHR.responseText);
+				alert(textStatus);
+				Utility.objDump(errorThrown);
+			});
+		},
+
+		onClickIndexButton: function() {
+			'use strict';
+			var self = this;
+			self.collection.fetch();
+		},
+
+		onClickIndexAjaxButton: function() {
+			'use strict';
+
+			var url = '/users.json';
+
+			$.ajax({
+				type:'get',
+				url: url,
+			}).done(function(json/* , textStatus, jqXHR */) {
+
+				_.each(json, function(value/* , key */) {
+
+					Utility.objDump(value);
+				});
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+
+				alert(jqXHR.responseText);
+				alert(textStatus);
+				Utility.objDump(errorThrown);
+			});
+		},
+
+		// View がレンダリングされて画面に表示された後に呼ばれるメソッド。
+		onShow: function() {
+			'use strict';
+
+			// Get rid of that pesky wrapping-div.
+			// Assumes 1 child element present in template.
+			this.$el = this.$el.children();
+			// Unwrap the element to prevent infinitely 
+			// nesting elements during re-render.
+			this.$el.unwrap();
+			this.setElement(this.$el);
+
+			this.collection.fetch();
+			
+			$('#sub').on('click', this.onClickSubButton);
+		},
+	});
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(11)))
+
+/***/ },
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Backbone) {/*global Backbone */
 
-	var User = __webpack_require__(14);
+	var User = __webpack_require__(16);
 
 	module.exports = Backbone.Collection.extend({
 
@@ -14805,66 +14844,10 @@
 
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function($) {
-	var Backbone = __webpack_require__(5);
-	__webpack_require__(3);
-
-	var User = __webpack_require__(14);
-
-	module.exports = Backbone.Marionette.ItemView.extend({
-
-		tagName: 'tr',
-		model: User,
-		template: '#ItemViewTemplate',
-	//	getTemplate: function(){
-	//		'use strict';
-	//		return _.template(html);;
-	//	},
-		templateHelpers: function() {
-			'use strict';
-			return {};
-		},
-
-		// ViewとModelのBinding.
-		bindings: {
-			'td#id': 'id',
-			'td#username': 'username',
-			'td#password': 'password',
-			'td#role': 'role',
-			'td#created': 'created',
-			'td#modified': 'modified',
-		},
-
-		initialize: function(/* options */) {
-			'use strict';
-
-			// templateを追加.
-			var html = __webpack_require__(15);
-			$('body').append(html);
-		},
-
-		// View がレンダリングされた後に呼ばれるメソッド。
-		onRender: function() {
-			'use strict';
-		},
-
-		// View がレンダリングされて画面に表示された後に呼ばれるメソッド。
-		onShow: function() {
-			'use strict';
-			this.stickit();
-		},
-	});
-	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.6.0
@@ -16213,36 +16196,76 @@
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/*global alert */
+	/* WEBPACK VAR INJECTION */(function($) {
+	var Backbone = __webpack_require__(7);
+	__webpack_require__(5);
 
-	exports.objDump = function(obj) {
-		'use strict';
+	var User = __webpack_require__(16);
 
-		var txt = '';
-		for (var one in obj){
-			txt += one + '=' + obj[one] + '\n';
-		}
-		alert(txt);
-	};
+	module.exports = Backbone.Marionette.ItemView.extend({
 
+		tagName: 'tr',
+		model: User,
+		template: '#ItemViewTemplate',
+	//	getTemplate: function(){
+	//		'use strict';
+	//		return _.template(html);;
+	//	},
+		templateHelpers: function() {
+			'use strict';
+			return {};
+		},
+
+		// ViewとModelのBinding.
+		bindings: {
+			'td#id': 'id',
+			'td#username': 'username',
+			'td#password': 'password',
+			'td#role': 'role',
+			'td#created': 'created',
+			'td#modified': 'modified',
+		},
+
+		initialize: function(/* options */) {
+			'use strict';
+
+			// templateを追加.
+			var html = __webpack_require__(17);
+			$('body').append(html);
+		},
+
+		// View がレンダリングされた後に呼ばれるメソッド。
+		onRender: function() {
+			'use strict';
+		},
+
+		// View がレンダリングされて画面に表示された後に呼ばれるメソッド。
+		onShow: function() {
+			'use strict';
+			this.stickit();
+		},
+	});
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 12 */
+/* 13 */,
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<script id=\"ContentTemplate\" type=\"text/template\">\n\t<div id=\"filter\"></div>\n\t</div>\n</script>\n";
 
 /***/ },
-/* 13 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<script id=\"SearchViewTemplate\" type=\"text/template\">\n\t<input type=\"button\" id=\"sub\" value=\"sub\" />\n\t<table>\n\t<tbody>\n\t<tr>\n\t<td><input type=\"button\" id=\"add\" value=\"add\" /></td>\n\t<td><input type=\"button\" id=\"addAjax\" value=\"addAjax\" /></td>\n\t</tr>\n\t<tr>\n\t<td><input type=\"button\" id=\"edit\" value=\"edit\" /></td>\n\t<td><input type=\"button\" id=\"editAjax\" value=\"editAjax\" /></td>\n\t</tr>\n\t<tr>\n\t<td><input type=\"button\" id=\"delete\" value=\"delete\" /></td>\n\t<td><input type=\"button\" id=\"deleteAjax\" value=\"deleteAjax\" /></td>\n\t</tr>\n\t<tr>\n\t<td><input type=\"button\" id=\"view\" value=\"view\" />\n\t<td><input type=\"button\" id=\"viewAjax\" value=\"viewAjax\" />\n\t</tr>\n\t<tr>\n\t<td><input type=\"button\" id=\"index\" value=\"index\" />\n\t<td><input type=\"button\" id=\"indexAjax\" value=\"indexAjax\" />\n\t</tr>\n\t</tbody>\n\t</table>\n\t<div id=\"eventName\"></div>\n\t<table>\n\t<thead>\n\t</thead>\n\t<tbody id=\"body\">\n\t</tbody>\n\t</table>\n</script>\n";
 
 /***/ },
-/* 14 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Backbone) {/*global Backbone */
@@ -16288,10 +16311,10 @@
 		},
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ },
-/* 15 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<script id=\"ItemViewTemplate\" type=\"text/template\">\n\t<td id=\"id\"><%- id %></td>\n\t<td id=\"username\"><%- username %></td>\n\t<td id=\"password\"><%- password %></td>\n\t<td id=\"role\"><%- role %></td>\n\t<td id=\"created\"><%- created %></td>\n\t<td id=\"modified\"><%- modified %></td>\n</script>\n";

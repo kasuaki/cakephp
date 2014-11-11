@@ -32,19 +32,20 @@ App::uses('Controller', 'Controller');
  */
 class MainController extends AppController {
 
-	public $layout = false;
+//	public $layout = false;
 
 	public function beforeFilter() {
 	    parent::beforeFilter();
 
 //	    $this->Auth->allow(array('index', 'logout'));
 
-		$this->OAuth->allow(array('index', 'sub'));
+//		$this->OAuth->allow(array('index', 'sub'));
 	}
 
     public function index() {
     }
 
     public function sub() {
+    	$this->layout = false;
     }
 }
