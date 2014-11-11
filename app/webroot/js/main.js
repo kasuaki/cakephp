@@ -44,13 +44,15 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {
-	var Backbone = __webpack_require__(7);
-	__webpack_require__(5);
-	__webpack_require__(6);
+	/* WEBPACK VAR INJECTION */(function($) {/*global alert */
 
-	var BodyLayout = __webpack_require__(2);
+	var Backbone = __webpack_require__(9);
+	__webpack_require__(6);
+	__webpack_require__(7);
+
+	var BodyLayout = __webpack_require__(1);
 	var ContentLayout = __webpack_require__(4);
+	var SubContentLayout = __webpack_require__(5);
 
 	// アプリクラス.
 	var app = new Backbone.Marionette.Application();
@@ -62,6 +64,31 @@
 	app.addInitializer(function(/* options */){
 		'use strict';
 
+		var Controller = Backbone.Marionette.Controller.extend({
+
+		    main: function() {
+				app.bodyRegion.currentView.contentRegion.close();
+				app.bodyRegion.currentView.contentRegion.show(new ContentLayout());
+		    },
+		    sub: function() {
+
+				app.bodyRegion.currentView.contentRegion.close();
+				app.bodyRegion.currentView.contentRegion.show(new SubContentLayout());
+		    }
+		});
+
+		app.Router = new Backbone.Marionette.AppRouter({
+			appRoutes: {
+			'': 'main',
+			'main/index': 'main',
+			'main/sub': 'sub',
+			},
+			controller: new Controller(),
+		});
+	//	app.Router.on('route', function() {
+	//		alert('route');
+	//	});
+
 		var bodyLayout = new BodyLayout();
 		app.bodyRegion.attachView(bodyLayout);
 
@@ -71,7 +98,9 @@
 	app.on('start', function(/* options */){
 		'use strict';
 
-		if (Backbone.history){ Backbone.history.start(); }
+		if (Backbone.history){
+			Backbone.history.start({pushState: true});
+		}
 	});
 
 	$(function(){
@@ -81,53 +110,15 @@
 		app.start();
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(_) {/*global alert */
-
-	exports.objDump = function(obj) {
-		'use strict';
-
-		var txt = '';
-		for (var one in obj){
-			txt += one + '=' + obj[one] + '\n';
-		}
-		alert(txt);
-	};
-
-	exports.locationHref = function(url) {
-		'use strict';
-
-		var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
-		var access_token = tokenResult.access_token;
-
-		if (_.isString(access_token)) {
-
-			if (url.indexOf('?') > -1) {
-				access_token = '&access_token=' + access_token;
-			} else {
-				access_token = '?access_token=' + access_token;
-			}
-
-			location.href = url + access_token;
-		} else {
-			alert('�A�N�Z�X�g�[�N���Ȃ�');
-		}
-	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
-
-/***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	var Backbone = __webpack_require__(7);
-	__webpack_require__(5);
+	var Backbone = __webpack_require__(9);
+	__webpack_require__(6);
 
 	// 検索View.
 	module.exports = Backbone.Marionette.Layout.extend({
@@ -159,15 +150,18 @@
 
 
 /***/ },
+/* 2 */,
 /* 3 */,
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {var Backbone = __webpack_require__(7);
-	__webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function($) {var Backbone = __webpack_require__(9);
+	__webpack_require__(6);
 
-	var UserList = __webpack_require__(10);
-	var SearchView  = __webpack_require__(9);
+	var Utility = __webpack_require__(8);
+
+	var UserList = __webpack_require__(12);
+	var SearchView  = __webpack_require__(11);
 
 	// Content部.
 	module.exports = Backbone.Marionette.Layout.extend({
@@ -192,8 +186,8 @@
 			'use strict';
 
 			// templateを追加.
-			var html = __webpack_require__(14);
-			$('body').append(html);
+			var html = __webpack_require__(17);
+			Utility.addTemplate(html, 'ContentTemplate');
 
 			$.ajaxSetup({
 				cache: false,
@@ -205,7 +199,7 @@
 				beforeSend: function(XMLHttpRequest){
 					// アクセストークンをヘッダーにセットする必要がある.
 					var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
-					var header = 'Bearer ' + tokenResult.access_token;
+					var header = 'Bearer ' + tokenResult.accessToken;
 					XMLHttpRequest.setRequestHeader('Authorization', header);
 				},
 			});
@@ -231,10 +225,90 @@
 		},
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ },
 /* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function($) {
+	var Backbone = __webpack_require__(9);
+	__webpack_require__(6);
+
+	var Utility = __webpack_require__(8);
+
+	// Content部.
+	module.exports = Backbone.Marionette.Layout.extend({
+
+		template: '#SubContentTemplate',
+		templateHelpers: function() {
+			'use strict';
+			return {};
+		},
+
+		ui: {
+			mainButton: '#main',
+		},
+		regions: {
+		},
+
+		events: {
+			'click @ui.mainButton': 'onClickMainButton',
+		},
+
+		onClickMainButton: function() {
+			'use strict';
+
+			Backbone.history.navigate('main/index', true);
+	//		Utility.locationHref('/main/index');
+		},
+
+		initialize: function(/* options */) {
+			'use strict';
+
+			// templateを追加.
+			var html = __webpack_require__(18);
+			Utility.addTemplate(html, 'SubContentTemplate');
+
+			$.ajaxSetup({
+				cache: false,
+				async: true,
+				dataType:'json',
+	//			headers: headers,
+	//			contentType : '',
+	//			mimeType: '',
+				beforeSend: function(XMLHttpRequest){
+					// アクセストークンをヘッダーにセットする必要がある.
+					var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
+					if (tokenResult !== null) {
+						var header = 'Bearer ' + tokenResult.accessToken;
+						XMLHttpRequest.setRequestHeader('Authorization', header);
+					}
+				},
+			});
+		},
+
+		// View がレンダリングされて画面に表示された後に呼ばれるメソッド。
+		onShow: function() {
+			'use strict';
+
+			// Get rid of that pesky wrapping-div.
+			// Assumes 1 child element present in template.
+			this.$el = this.$el.children();
+			// Unwrap the element to prevent infinitely 
+			// nesting elements during re-render.
+			this.$el.unwrap();
+			this.setElement(this.$el);
+			this.bindUIElements();
+
+			$('#main').on('click', this.onClickMainButton);
+		},
+	});
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
+
+/***/ },
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Backbone, _) {// MarionetteJS (Backbone.Marionette)
@@ -3152,10 +3226,10 @@
 	  return Marionette;
 	})(this, Backbone, _);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(13)))
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Backbone.Stickit v0.8.0, MIT Licensed
@@ -3165,7 +3239,7 @@
 
 	  // Set up Stickit appropriately for the environment. Start with AMD.
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(11), __webpack_require__(7), exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(13), __webpack_require__(9), exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  }
 
 	  // Next for Node.js or CommonJS.
@@ -3736,7 +3810,55 @@
 
 
 /***/ },
-/* 7 */
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_, $) {/*global _ */
+	/*global alert */
+
+	exports.objDump = function(obj) {
+		'use strict';
+
+		var txt = '';
+		for (var one in obj){
+			txt += one + '=' + obj[one] + '\n';
+		}
+		alert(txt);
+	};
+
+	exports.locationHref = function(url) {
+		'use strict';
+
+		var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
+		var accessToken = tokenResult.accessToken;
+
+		if (_.isString(accessToken)) {
+
+			if (url.indexOf('?') > -1) {
+				accessToken = '&access_token=' + accessToken;
+			} else {
+				accessToken = '?access_token=' + accessToken;
+			}
+
+			location.href = url + accessToken;
+		} else {
+			alert('アクセストークンなし');
+		}
+	};
+
+	exports.addTemplate = function(html, id) {
+		'use strict';
+
+		if ($('#' + id).size() <= 0) {
+
+			$('body').append(html);
+		}
+	};
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(10)))
+
+/***/ },
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Backbone.js 1.1.2
@@ -3750,7 +3872,7 @@
 
 	  // Set up Backbone appropriately for the environment. Start with AMD.
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(11), __webpack_require__(8), exports], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, $, exports) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(13), __webpack_require__(10), exports], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, $, exports) {
 	      // Export global even in AMD case in case this script is loaded with
 	      // others that may still expect a global Backbone.
 	      root.Backbone = factory(root, exports, _, $);
@@ -5350,7 +5472,7 @@
 
 
 /***/ },
-/* 8 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -14467,18 +14589,18 @@
 
 
 /***/ },
-/* 9 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($, _) {/*global _ */
+	/* WEBPACK VAR INJECTION */(function(_, $) {/*global _ */
 	/*global alert */
 
-	var Backbone = __webpack_require__(7);
-	__webpack_require__(5);
+	var Backbone = __webpack_require__(9);
+	__webpack_require__(6);
 
-	var Utility = __webpack_require__(1);
+	var Utility = __webpack_require__(8);
 
-	var TableItemView = __webpack_require__(12);
+	var TableItemView = __webpack_require__(14);
 
 	// 検索View.
 	module.exports = Backbone.Marionette.CompositeView.extend({
@@ -14505,7 +14627,8 @@
 			indexButton: '#index',
 			indexAjaxButton: '#indexAjax',
 			subButton: '#sub',
-			eventName: '#eventName',
+			anotherButton: '#another',
+			eventDiv: '#eventName',
 		},
 		events: {
 			'click @ui.addButton': 'onClickAddButton',
@@ -14519,21 +14642,25 @@
 			'click @ui.indexButton': 'onClickIndexButton',
 			'click @ui.indexAjaxButton': 'onClickIndexAjaxButton',
 			'click @ui.subButton': 'onClickSubButton',
+			'click @ui.anotherButton': 'onClickAnotherButton',
 		},
 
 		initialize: function(/* options */) {
 			'use strict';
 
 			// templateを追加.
-			var html = __webpack_require__(15);
-			$('body').append(html);
+			var html = __webpack_require__(19);
+			Utility.addTemplate(html, 'SearchViewTemplate');
 
 			// イベント監視.
 			this.collection.on('all', _.bind(function(eventName, a, b/* , c */) {
 
 				var self = this;
-				var old = self.ui.eventName.text();
-				self.ui.eventName.text(old + ' ' + eventName);
+				var eventDiv = self.ui.eventDiv;
+				if (_.isObject(eventDiv)) {
+					var old = eventDiv.text();
+					eventDiv.text(old + ' ' + eventName);
+				}
 
 				switch(eventName) {
 					case 'error':
@@ -14561,29 +14688,19 @@
 						break;
 				}
 			}, this));
+		},
 
-	//		var headers = {};
+		onClickAnotherButton: function() {
+			'use strict';
 
-			$.ajaxSetup({
-				cache: false,
-				async: true,
-				dataType:'json',
-	//			headers: headers,
-	//			contentType : '',
-	//			mimeType: '',
-				beforeSend: function(XMLHttpRequest){
-					// アクセストークンをヘッダーにセットする必要がある.
-					var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
-					var header = 'Bearer ' + tokenResult.access_token;
-					XMLHttpRequest.setRequestHeader('Authorization', header);
-				},
-			});
+			Utility.locationHref('/anothers');
 		},
 
 		onClickSubButton: function() {
 			'use strict';
 
-			Utility.locationHref('/main/sub');
+			Backbone.history.navigate('main/sub', true);
+	//		location.href = '/main/sub';
 		},
 
 		onClickAddButton: function() {
@@ -14786,20 +14903,21 @@
 			this.setElement(this.$el);
 
 			this.collection.fetch();
-			
+
 			$('#sub').on('click', this.onClickSubButton);
+			$('#another').on('click', this.onClickAnotherButton);
 		},
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(10)))
 
 /***/ },
-/* 10 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Backbone) {/*global Backbone */
 
-	var User = __webpack_require__(16);
+	var User = __webpack_require__(20);
 
 	module.exports = Backbone.Collection.extend({
 
@@ -14844,10 +14962,10 @@
 
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 11 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.6.0
@@ -16196,14 +16314,16 @@
 
 
 /***/ },
-/* 12 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {
-	var Backbone = __webpack_require__(7);
-	__webpack_require__(5);
+	
+	var Backbone = __webpack_require__(9);
+	__webpack_require__(6);
 
-	var User = __webpack_require__(16);
+	var Utility = __webpack_require__(8);
+
+	var User = __webpack_require__(20);
 
 	module.exports = Backbone.Marionette.ItemView.extend({
 
@@ -16233,8 +16353,8 @@
 			'use strict';
 
 			// templateを追加.
-			var html = __webpack_require__(17);
-			$('body').append(html);
+			var html = __webpack_require__(21);
+			Utility.addTemplate(html, 'ItemViewTemplate');
 		},
 
 		// View がレンダリングされた後に呼ばれるメソッド。
@@ -16248,24 +16368,30 @@
 			this.stickit();
 		},
 	});
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+
 
 /***/ },
-/* 13 */,
-/* 14 */
+/* 15 */,
+/* 16 */,
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<script id=\"ContentTemplate\" type=\"text/template\">\n\t<div id=\"filter\"></div>\n\t</div>\n</script>\n";
 
 /***/ },
-/* 15 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<script id=\"SearchViewTemplate\" type=\"text/template\">\n\t<input type=\"button\" id=\"sub\" value=\"sub\" />\n\t<table>\n\t<tbody>\n\t<tr>\n\t<td><input type=\"button\" id=\"add\" value=\"add\" /></td>\n\t<td><input type=\"button\" id=\"addAjax\" value=\"addAjax\" /></td>\n\t</tr>\n\t<tr>\n\t<td><input type=\"button\" id=\"edit\" value=\"edit\" /></td>\n\t<td><input type=\"button\" id=\"editAjax\" value=\"editAjax\" /></td>\n\t</tr>\n\t<tr>\n\t<td><input type=\"button\" id=\"delete\" value=\"delete\" /></td>\n\t<td><input type=\"button\" id=\"deleteAjax\" value=\"deleteAjax\" /></td>\n\t</tr>\n\t<tr>\n\t<td><input type=\"button\" id=\"view\" value=\"view\" />\n\t<td><input type=\"button\" id=\"viewAjax\" value=\"viewAjax\" />\n\t</tr>\n\t<tr>\n\t<td><input type=\"button\" id=\"index\" value=\"index\" />\n\t<td><input type=\"button\" id=\"indexAjax\" value=\"indexAjax\" />\n\t</tr>\n\t</tbody>\n\t</table>\n\t<div id=\"eventName\"></div>\n\t<table>\n\t<thead>\n\t</thead>\n\t<tbody id=\"body\">\n\t</tbody>\n\t</table>\n</script>\n";
+	module.exports = "<script id=\"SubContentTemplate\" type=\"text/template\">\n\t<input type=\"button\" id=\"main\" value=\"main\" />\n</script>\n";
 
 /***/ },
-/* 16 */
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "<script id=\"SearchViewTemplate\" type=\"text/template\">\n\t<input type=\"button\" id=\"sub\" value=\"sub\" />\n\t<input type=\"button\" id=\"another\" value=\"another\" />\n\t<table>\n\t<tbody>\n\t<tr>\n\t<td><input type=\"button\" id=\"add\" value=\"add\" /></td>\n\t<td><input type=\"button\" id=\"addAjax\" value=\"addAjax\" /></td>\n\t</tr>\n\t<tr>\n\t<td><input type=\"button\" id=\"edit\" value=\"edit\" /></td>\n\t<td><input type=\"button\" id=\"editAjax\" value=\"editAjax\" /></td>\n\t</tr>\n\t<tr>\n\t<td><input type=\"button\" id=\"delete\" value=\"delete\" /></td>\n\t<td><input type=\"button\" id=\"deleteAjax\" value=\"deleteAjax\" /></td>\n\t</tr>\n\t<tr>\n\t<td><input type=\"button\" id=\"view\" value=\"view\" />\n\t<td><input type=\"button\" id=\"viewAjax\" value=\"viewAjax\" />\n\t</tr>\n\t<tr>\n\t<td><input type=\"button\" id=\"index\" value=\"index\" />\n\t<td><input type=\"button\" id=\"indexAjax\" value=\"indexAjax\" />\n\t</tr>\n\t</tbody>\n\t</table>\n\t<div id=\"eventName\"></div>\n\t<table>\n\t<thead>\n\t</thead>\n\t<tbody id=\"body\">\n\t</tbody>\n\t</table>\n</script>\n";
+
+/***/ },
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Backbone) {/*global Backbone */
@@ -16311,10 +16437,10 @@
 		},
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 17 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<script id=\"ItemViewTemplate\" type=\"text/template\">\n\t<td id=\"id\"><%- id %></td>\n\t<td id=\"username\"><%- username %></td>\n\t<td id=\"password\"><%- password %></td>\n\t<td id=\"role\"><%- role %></td>\n\t<td id=\"created\"><%- created %></td>\n\t<td id=\"modified\"><%- modified %></td>\n</script>\n";

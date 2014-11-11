@@ -45,12 +45,12 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {
-	var Backbone = __webpack_require__(7);
-	__webpack_require__(5);
+	var Backbone = __webpack_require__(9);
 	__webpack_require__(6);
+	__webpack_require__(7);
 
-	var BodyLayout = __webpack_require__(2);
-	var ContentLayout = __webpack_require__(3);
+	var BodyLayout = __webpack_require__(1);
+	var ContentLayout = __webpack_require__(2);
 
 	// アプリクラス.
 	var app = new Backbone.Marionette.Application();
@@ -81,53 +81,15 @@
 		app.start();
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(_) {/*global alert */
-
-	exports.objDump = function(obj) {
-		'use strict';
-
-		var txt = '';
-		for (var one in obj){
-			txt += one + '=' + obj[one] + '\n';
-		}
-		alert(txt);
-	};
-
-	exports.locationHref = function(url) {
-		'use strict';
-
-		var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
-		var access_token = tokenResult.access_token;
-
-		if (_.isString(access_token)) {
-
-			if (url.indexOf('?') > -1) {
-				access_token = '&access_token=' + access_token;
-			} else {
-				access_token = '?access_token=' + access_token;
-			}
-
-			location.href = url + access_token;
-		} else {
-			alert('�A�N�Z�X�g�[�N���Ȃ�');
-		}
-	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
-
-/***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	var Backbone = __webpack_require__(7);
-	__webpack_require__(5);
+	var Backbone = __webpack_require__(9);
+	__webpack_require__(6);
 
 	// 検索View.
 	module.exports = Backbone.Marionette.Layout.extend({
@@ -159,16 +121,16 @@
 
 
 /***/ },
-/* 3 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_, $) {/*global _ */
 	/*global alert */
 
-	var Backbone = __webpack_require__(7);
-	__webpack_require__(5);
+	var Backbone = __webpack_require__(9);
+	__webpack_require__(6);
 
-	var Utility = __webpack_require__(1);
+	var Utility = __webpack_require__(8);
 
 	// Content部.
 	module.exports = Backbone.Marionette.Layout.extend({
@@ -244,8 +206,8 @@
 			'use strict';
 
 			// templateを追加.
-			var html = __webpack_require__(13);
-			$('body').append(html);
+			var html = __webpack_require__(15);
+			Utility.addTemplate(html, 'ContentTemplate');
 
 			$.ajaxSetup({
 				cache: false,
@@ -258,7 +220,7 @@
 					// アクセストークンをヘッダーにセットする必要がある.
 					var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
 					if (tokenResult !== null) {
-						var header = 'Bearer ' + tokenResult.access_token;
+						var header = 'Bearer ' + tokenResult.accessToken;
 						XMLHttpRequest.setRequestHeader('Authorization', header);
 					}
 				},
@@ -280,11 +242,13 @@
 		},
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(8)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(10)))
 
 /***/ },
+/* 3 */,
 /* 4 */,
-/* 5 */
+/* 5 */,
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Backbone, _) {// MarionetteJS (Backbone.Marionette)
@@ -3202,10 +3166,10 @@
 	  return Marionette;
 	})(this, Backbone, _);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(13)))
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Backbone.Stickit v0.8.0, MIT Licensed
@@ -3215,7 +3179,7 @@
 
 	  // Set up Stickit appropriately for the environment. Start with AMD.
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(11), __webpack_require__(7), exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(13), __webpack_require__(9), exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  }
 
 	  // Next for Node.js or CommonJS.
@@ -3786,7 +3750,55 @@
 
 
 /***/ },
-/* 7 */
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_, $) {/*global _ */
+	/*global alert */
+
+	exports.objDump = function(obj) {
+		'use strict';
+
+		var txt = '';
+		for (var one in obj){
+			txt += one + '=' + obj[one] + '\n';
+		}
+		alert(txt);
+	};
+
+	exports.locationHref = function(url) {
+		'use strict';
+
+		var tokenResult = JSON.parse(localStorage.getItem('tokenResult'));
+		var accessToken = tokenResult.accessToken;
+
+		if (_.isString(accessToken)) {
+
+			if (url.indexOf('?') > -1) {
+				accessToken = '&access_token=' + accessToken;
+			} else {
+				accessToken = '?access_token=' + accessToken;
+			}
+
+			location.href = url + accessToken;
+		} else {
+			alert('アクセストークンなし');
+		}
+	};
+
+	exports.addTemplate = function(html, id) {
+		'use strict';
+
+		if ($('#' + id).size() <= 0) {
+
+			$('body').append(html);
+		}
+	};
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(10)))
+
+/***/ },
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Backbone.js 1.1.2
@@ -3800,7 +3812,7 @@
 
 	  // Set up Backbone appropriately for the environment. Start with AMD.
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(11), __webpack_require__(8), exports], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, $, exports) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(13), __webpack_require__(10), exports], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, $, exports) {
 	      // Export global even in AMD case in case this script is loaded with
 	      // others that may still expect a global Backbone.
 	      root.Backbone = factory(root, exports, _, $);
@@ -5400,7 +5412,7 @@
 
 
 /***/ },
-/* 8 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -14517,9 +14529,9 @@
 
 
 /***/ },
-/* 9 */,
-/* 10 */,
-/* 11 */
+/* 11 */,
+/* 12 */,
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.6.0
@@ -15868,8 +15880,8 @@
 
 
 /***/ },
-/* 12 */,
-/* 13 */
+/* 14 */,
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<script id=\"ContentTemplate\" type=\"text/template\">\n<div class=\"users form\">\n\t<form id=\"UserLoginForm\" action=\"/\" method=\"post\" accept-charset=\"utf-8\">\n\t\t<div style=\"display: none;\">\n\t\t\t<input name=\"_method\" type=\"hidden\" value=\"POST\">\n\t\t</div>\n\t\t<fieldset>\n\t\t\t<legend>Please enter your username and password</legend>\n\t\t\t<div class=\"input text required\">\n\t\t\t\t<label for=\"UserUsername\">Username</label>\n\t\t\t\t<input name=\"data[User][username]\" id=\"UserUsername\" required=\"required\" type=\"text\" maxlength=\"50\">\n\t\t\t</div>\n\t\t\t<div class=\"input password required\">\n\t\t\t\t<label for=\"UserPassword\">Password</label>\n\t\t\t\t<input name=\"data[User][password]\" id=\"UserPassword\" required=\"required\" type=\"password\">\n\t\t\t</div>\n\t\t</fieldset>\n\t\t<div class=\"submit\"><input type=\"button\" id=\"Login\" value=\"Login\"></div>\n\t</form>\n</div>\n</script>\n";

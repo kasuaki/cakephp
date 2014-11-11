@@ -53,6 +53,7 @@ class LoginsController extends AppController {
 					$this->OAuth->OAuth2->grantAccessToken($tokenParams, $authHeaders);
 					$tokenResult = (array)json_decode(ob_get_clean());
 					$tokenResult["result"] = "success";
+					$tokenResult["accessToken"] = $tokenResult["access_token"];
 				} catch(Exception $e) {
 
 					$tokenResult["result"] = "error";

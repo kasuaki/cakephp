@@ -30,7 +30,7 @@ App::uses('Controller', 'Controller');
  * @package		app.Controller
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
-class MainController extends AppController {
+class AnothersController extends AppController {
 
 //	public $layout = false;
 
@@ -43,5 +43,9 @@ class MainController extends AppController {
 	}
 
     public function index() {
+    }
+
+    public function sub() {
+    	$this->layout = false;
     }
 }
