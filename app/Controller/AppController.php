@@ -42,6 +42,7 @@ class AppController extends Controller {
 				'fields' => array('username' => 'username', 
 								  'password' => 'password'),
 			),
+			'loginAction' => array('controller' => 'logins', 'action' => 'index'),
 		),
 		'DebugKit.Toolbar',
 		'Session',

@@ -21,6 +21,18 @@ App::uses('OAuthComponent', 'Plugin/OAuth/Controller/Component');
 class MyOAuthComponent extends OAuthComponent {
 
 /**
+ * A URL (defined as a string or array) to the controller action that handles
+ * logins. Defaults to `/users/login`.
+ *
+ * @var mixed
+ */
+	public $loginAction = array(
+		'controller' => 'logins',
+		'action' => 'index',
+		'plugin' => null
+	);
+
+/**
  * Constructor - Adds class associations
  *
  * @see OAuth2::__construct().
@@ -79,4 +91,70 @@ class MyOAuthComponent extends OAuthComponent {
 		return false;
 	}
 
+/**
+ * Main engine that checks valid access_token and stores the associated user for retrival
+ *
+ * @see AuthComponent::startup()
+ *
+ * @param type $controller
+ * @return boolean
+ */
+	public function startup(Controller $controller) {
+		$methods = array_flip(array_map('strtolower', $controller->methods));
+		$action = strtolower($controller->request->params['action']);
+
+		$this->authenticate = Hash::merge($this->_authDefaults, $this->authenticate);
+		$this->User = ClassRegistry::init(array(
+			'class' => $this->authenticate['userModel'],
+			'alias' => $this->authenticate['userModel']
+			));
+
+		$isMissingAction = (
+			$controller->scaffold === false &&
+			!isset($methods[$action])
+		);
+		if ($isMissingAction) {
+			return true;
+		}
+
+		$allowedActions = $this->allowedActions;
+		$isAllowed = (
+			$this->allowedActions == array('*') ||
+			in_array($action, array_map('strtolower', $allowedActions))
+		);
+		if ($isAllowed) {
+			return true;
+		}
+
+		try {
+			$result = $this->isAuthorized();
+			if ($result == false) {
+
+				$controller->redirect($this->loginAction);
+				return false;
+			}
+			$this->user(null, $this->AccessToken->id);
+		} catch (OAuth2AuthenticateException $e) {
+			return false;
+		}
+		return true;
+	}
+
+/**
+ * Fakes the OAuth2.php vendor class extension for methods
+ *
+ * @param string $name
+ * @param mixed $arguments
+ * @return mixed
+ * @throws Exception
+ */
+	public function __call($name, $arguments) {
+		if (method_exists($this->OAuth2, $name)) {
+			try {
+				return call_user_func_array(array($this->OAuth2, $name), $arguments);
+			} catch (Exception $e) {
+				throw $e;
+			}
+		}
+	}
 }
