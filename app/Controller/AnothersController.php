@@ -37,15 +37,11 @@ class AnothersController extends AppController {
 	public function beforeFilter() {
 	    parent::beforeFilter();
 
-//	    $this->Auth->allow(array('index', 'logout'));
+	    $this->Auth->deny(array('index'));
 
-//		$this->OAuth->allow(array('index', 'sub'));
+		$this->OAuth->allow(array('index'));
 	}
 
     public function index() {
-    }
-
-    public function sub() {
-    	$this->layout = false;
     }
 }

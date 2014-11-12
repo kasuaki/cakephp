@@ -54,6 +54,10 @@ class LoginsController extends AppController {
 					$tokenResult = (array)json_decode(ob_get_clean());
 					$tokenResult["result"] = "success";
 					$tokenResult["accessToken"] = $tokenResult["access_token"];
+
+					$url = $this->Auth->redirect();
+					$tokenResult["url"] = ($url == DS) ? "/main/index" : $url;
+
 				} catch(Exception $e) {
 
 					$tokenResult["result"] = "error";

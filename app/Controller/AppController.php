@@ -56,7 +56,7 @@ class AppController extends Controller {
         	),
             'loginRedirect' => array('controller' => 'main', 'action' => 'index'),
             'logoutRedirect' => array('controller' => 'main', 'action' => 'logout'),
-			'loginAction' => array('controller' => 'logins', 'action' => 'login'),
+			'loginAction' => array('controller' => 'logins', 'action' => 'index'),
 			//未ログイン時のメッセージ
 			'authError' => 'あなたのお名前とパスワードを入力して下さい。',
         ),
