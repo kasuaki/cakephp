@@ -89,6 +89,7 @@ Cache::config('default', array('engine' => 'File'));
  */
 CakePlugin::load('DebugKit');
 CakePlugin::load('Migrations');
+CakePlugin::load('TwitterBootstrap');
 
 CakePlugin::loadAll(array(
     'OAuth' => array('routes' => true)
