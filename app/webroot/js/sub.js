@@ -40,8 +40,9 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {
@@ -55,15 +56,11 @@
 		});
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
 
 /***/ },
-/* 1 */,
-/* 2 */,
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */
+
+/***/ 6:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_, $) {/*global _ */
@@ -120,12 +117,11 @@
 		}
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(12)))
 
 /***/ },
-/* 7 */,
-/* 8 */,
-/* 9 */
+
+/***/ 9:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.6.0
@@ -1474,8 +1470,8 @@
 
 
 /***/ },
-/* 10 */,
-/* 11 */
+
+/***/ 12:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10592,4 +10588,5 @@
 
 
 /***/ }
-/******/ ])
+
+/******/ })

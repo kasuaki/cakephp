@@ -81,7 +81,7 @@
 		app.start();
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
 
 /***/ },
 /* 1 */
@@ -200,7 +200,7 @@
 		},
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
 
 /***/ },
 /* 6 */
@@ -260,7 +260,7 @@
 		}
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(12)))
 
 /***/ },
 /* 7 */
@@ -5128,7 +5128,7 @@
 
 	  // Set up Backbone appropriately for the environment. Start with AMD.
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(9), __webpack_require__(11), exports], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, $, exports) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(9), __webpack_require__(12), exports], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, $, exports) {
 	      // Export global even in AMD case in case this script is loaded with
 	      // others that may still expect a global Backbone.
 	      root.Backbone = factory(root, exports, _, $);
@@ -6728,7 +6728,8 @@
 
 
 /***/ },
-/* 11 */
+/* 11 */,
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -15845,7 +15846,6 @@
 
 
 /***/ },
-/* 12 */,
 /* 13 */,
 /* 14 */,
 /* 15 */,

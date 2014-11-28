@@ -81,7 +81,7 @@
 		app.start();
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
 
 /***/ },
 /* 1 */
@@ -207,7 +207,7 @@
 			'use strict';
 
 			// templateを追加.
-			var html = __webpack_require__(15);
+			var html = __webpack_require__(17);
 			Utility.addTemplate(html, 'ContentTemplate');
 
 			$.ajaxSetup({
@@ -243,7 +243,7 @@
 		},
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(12)))
 
 /***/ },
 /* 3 */,
@@ -306,7 +306,7 @@
 		}
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(12)))
 
 /***/ },
 /* 7 */
@@ -5174,7 +5174,7 @@
 
 	  // Set up Backbone appropriately for the environment. Start with AMD.
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(9), __webpack_require__(11), exports], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, $, exports) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(9), __webpack_require__(12), exports], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, $, exports) {
 	      // Export global even in AMD case in case this script is loaded with
 	      // others that may still expect a global Backbone.
 	      root.Backbone = factory(root, exports, _, $);
@@ -6774,7 +6774,8 @@
 
 
 /***/ },
-/* 11 */
+/* 11 */,
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -15891,10 +15892,11 @@
 
 
 /***/ },
-/* 12 */,
 /* 13 */,
 /* 14 */,
-/* 15 */
+/* 15 */,
+/* 16 */,
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<script id=\"ContentTemplate\" type=\"text/template\">\n<div class=\"users form\">\n\n\t<form class=\"form-signin\" role=\"form\" id=\"UserLoginForm\" action=\"/\" method=\"post\" accept-charset=\"utf-8\">\n\t\t<div style=\"display: none;\">\n\t\t\t<input name=\"_method\" type=\"hidden\" value=\"POST\">\n\t\t</div>\n\t\t<fieldset>\n\t\t\t<legend>Please enter your username and password</legend>\n\t\t\t<div class=\"input text required\">\n\t\t\t\t<label for=\"UserUsername\">Username</label>\n\t\t\t\t<input class=\"form-control\" name=\"data[User][username]\" id=\"UserUsername\" required=\"required\" type=\"text\" maxlength=\"50\">\n\t\t\t</div>\n\t\t\t<div class=\"input password required\">\n\t\t\t\t<label for=\"UserPassword\">Password</label>\n\t\t\t\t<input class=\"form-control\" name=\"data[User][password]\" id=\"UserPassword\" required=\"required\" type=\"password\">\n\t\t\t</div>\n\t\t</fieldset>\n\t\t<div class=\"submit\"><input class=\"btn btn-lg btn-primary btn-block\" type=\"button\" id=\"Login\" value=\"Login\"></div>\n\t</form>\n</div>\n</script>\n";
